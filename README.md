@@ -1,2 +1,10 @@
 # Desafio-Fullstack-Angular-Spring-VIAAPPIA
-Desafio de Projeto, para o processo seletivo da VIAAPPIA
+
+BUG : Flyway nao estar criando as tabelas "incident" e "comment" apenas a tabela "flyway_schema_history"
+
+# Trabalho feito no 1 dia codando 
+entidades
+repositorios 
+Services(terminar)
+Controllers(Terminar)
+Banco de dadaos(bug)
