@@ -19,7 +19,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comentarios {
+public class Comment {
 
     @Id
     @GeneratedValue
