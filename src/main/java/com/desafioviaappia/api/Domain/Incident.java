@@ -59,6 +59,7 @@ public class Incident {
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
+
     // Enums internos (ou podem ficar em arquivos separados)
     public enum Prioridade {
         BAIXA, MEDIA, ALTA
