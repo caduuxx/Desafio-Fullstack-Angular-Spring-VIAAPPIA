@@ -1,4 +1,4 @@
-package com.desafioviaappia.api.services;
+package com.desafioviaappia.api.Service;
 
 import com.desafioviaappia.api.Domain.Comment;
 import com.desafioviaappia.api.Domain.Incident;

@@ -1,7 +1,7 @@
 package com.desafioviaappia.api.Controllers;
 
 import com.desafioviaappia.api.Domain.Comment;
-import com.desafioviaappia.api.services.CommentService;
+import com.desafioviaappia.api.Service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
