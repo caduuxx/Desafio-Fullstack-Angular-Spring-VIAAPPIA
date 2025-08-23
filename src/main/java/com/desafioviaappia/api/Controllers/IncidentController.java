@@ -1,7 +1,7 @@
-package com.desafioviaappia.api.controllers;
+package com.desafioviaappia.api.Controllers;
 
 import com.desafioviaappia.api.Domain.Incident;
-import com.desafioviaappia.api.services.IncidentService;
+import com.desafioviaappia.api.Service.IncidentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;

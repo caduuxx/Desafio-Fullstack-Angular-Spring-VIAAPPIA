@@ -1,8 +1,10 @@
-package com.desafioviaappia.api.services;
+package com.desafioviaappia.api.Service;
 
 import com.desafioviaappia.api.Domain.Incident;
-import com.desafioviaappia.api.Repositores.IncedentRepository;
+import com.desafioviaappia.api.Repositores.IncidentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +19,11 @@ import java.util.stream.Collectors;
 public class IncidentService {
 
     @Autowired
-    private IncedentRepository incidentRepository;
+    private IncidentRepository incidentRepository;
 
     // Criar
     @Transactional
+    @CacheEvict(value = "incidents", allEntries = true)
     public Incident createIncident(Incident incident) {
         normalizeTags(incident);
         incident.setDataAbertura(LocalDateTime.now());
@@ -29,13 +32,13 @@ public class IncidentService {
     }
 
     // Listar com filtros e paginação
+    @Cacheable("incidents")
     public Page<Incident> listIncidents(Optional<String> status,
                                         Optional<String> prioridade,
                                         Optional<String> q,
                                         Pageable pageable) {
         List<Incident> all = incidentRepository.findAll();
 
-        // Filtros simples por exemplo, depois podemos usar Specification
         List<Incident> filtered = all.stream()
                 .filter(i -> status.map(s -> i.getStatus().name().equalsIgnoreCase(s)).orElse(true))
                 .filter(i -> prioridade.map(p -> i.getPrioridade().name().equalsIgnoreCase(p)).orElse(true))
@@ -56,6 +59,7 @@ public class IncidentService {
 
     // Atualizar
     @Transactional
+    @CacheEvict(value = "incidents", allEntries = true)
     public Optional<Incident> updateIncident(UUID id, Incident incident) {
         return incidentRepository.findById(id)
                 .map(existing -> {
@@ -72,12 +76,14 @@ public class IncidentService {
 
     // Deletar
     @Transactional
+    @CacheEvict(value = "incidents", allEntries = true)
     public void deleteIncident(UUID id) {
         incidentRepository.deleteById(id);
     }
 
     // Alterar status
     @Transactional
+    @CacheEvict(value = "incidents", allEntries = true)
     public Optional<Incident> updateStatus(UUID id, Incident.Status status) {
         return incidentRepository.findById(id)
                 .map(existing -> {

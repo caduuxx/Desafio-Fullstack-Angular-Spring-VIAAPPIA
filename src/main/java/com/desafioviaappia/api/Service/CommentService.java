@@ -3,7 +3,7 @@ package com.desafioviaappia.api.Service;
 import com.desafioviaappia.api.Domain.Comment;
 import com.desafioviaappia.api.Domain.Incident;
 import com.desafioviaappia.api.Repositores.CommentRepository;
-import com.desafioviaappia.api.Repositores.IncedentRepository;
+import com.desafioviaappia.api.Repositores.IncidentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     @Autowired
-    private IncedentRepository incidentRepository;
+    private IncidentRepository incidentRepository;
 
     // Criar comentário
     @Transactional
