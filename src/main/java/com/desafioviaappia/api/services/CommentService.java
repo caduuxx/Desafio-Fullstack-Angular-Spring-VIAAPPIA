@@ -1,13 +1,12 @@
 package com.desafioviaappia.api.services;
 
-import com.desafioviaappia.api.domain.Comment;
+import com.desafioviaappia.api.Domain.Comment;
 import com.desafioviaappia.api.Domain.Incident;
 import com.desafioviaappia.api.Repositores.CommentRepository;
 import com.desafioviaappia.api.Repositores.IncedentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

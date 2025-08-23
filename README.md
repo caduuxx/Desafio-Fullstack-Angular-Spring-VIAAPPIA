@@ -5,6 +5,6 @@ BUG : Flyway nao estar criando as tabelas "incident" e "comment" apenas a tabela
 # Trabalho feito no 1 dia codando 
 entidades
 repositorios 
-Services BUG : na ServiceComment Arrumar isso 
+Services 
 Controllers
 Banco de dadaos(bug)

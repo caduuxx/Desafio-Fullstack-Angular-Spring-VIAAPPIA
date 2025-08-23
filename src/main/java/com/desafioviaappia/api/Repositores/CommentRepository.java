@@ -1,4 +1,6 @@
-import com.desafioviaappia.api.domain.Comment;
+package com.desafioviaappia.api.Repositores;
+
+import com.desafioviaappia.api.Domain.Comment;
 import com.desafioviaappia.api.Domain.Incident;
 import org.springframework.data.jpa.repository.JpaRepository;
 

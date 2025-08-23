@@ -1,6 +1,8 @@
+-- Ativa extensão para UUIDs
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
-CREATE TABLE incident (
+-- Tabela principal de incidentes
+CREATE TABLE IF NOT EXISTS incident (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     titulo VARCHAR(120) NOT NULL,
     descricao TEXT,
@@ -12,6 +14,8 @@ CREATE TABLE incident (
     data_atualizacao TIMESTAMP NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_incident_status ON incident(status);
-CREATE INDEX idx_incident_prioridade ON incident(prioridade);
-CREATE INDEX idx_incident_titulo_texto ON incident USING GIN (to_tsvector('portuguese', titulo || ' ' || coalesce(descricao, '')));
+-- Indexes
+CREATE INDEX IF NOT EXISTS idx_incident_status ON incident(status);
+CREATE INDEX IF NOT EXISTS idx_incident_prioridade ON incident(prioridade);
+CREATE INDEX IF NOT EXISTS idx_incident_titulo_texto
+    ON incident USING GIN (to_tsvector('portuguese', titulo || ' ' || coalesce(descricao, '')));

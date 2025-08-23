@@ -1,4 +1,4 @@
-package com.desafioviaappia.api.Domain;
+package com.desafioviaappia.api.domain;
 
 import com.desafioviaappia.api.Domain.Incident;
 import jakarta.persistence.*;
