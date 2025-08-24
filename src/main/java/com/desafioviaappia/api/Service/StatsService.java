@@ -17,13 +17,13 @@ public class StatsService {
 
     public List<IncidentStatsDTO> getIncidentsByPriority() {
         return incidentRepository.countIncidentsByPriority().stream()
-                .map(obj -> new IncidentStatsDTO(obj[0].toString(), ((Long) obj[1]).intValue()))
+                .map(obj -> new IncidentStatsDTO(obj[0].toString(), ((Number) obj[1]).longValue()))
                 .toList();
     }
 
     public List<IncidentStatsDTO> getIncidentsByStatus() {
         return incidentRepository.countIncidentsByStatus().stream()
-                .map(obj -> new IncidentStatsDTO(obj[0].toString(), ((Long) obj[1]).intValue()))
+                .map(obj -> new IncidentStatsDTO(obj[0].toString(), ((Number) obj[1]).longValue()))
                 .toList();
     }
 }

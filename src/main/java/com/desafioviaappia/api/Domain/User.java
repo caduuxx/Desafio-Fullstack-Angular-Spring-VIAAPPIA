@@ -36,7 +36,8 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Spring espera "ROLE_..."
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role)); // se role = "ADMIN" ou "READ"
+
     }
 
     @Override public String getUsername() { return email; }

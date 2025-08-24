@@ -1,6 +1,7 @@
 package com.desafioviaappia.api.Security;
 
 import com.desafioviaappia.api.Repositores.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.*;
@@ -46,24 +47,40 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, UserRepository repo) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           AuthenticationProvider authenticationProvider) throws Exception {
+
         http.csrf(csrf -> csrf.disable());
 
         http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(reg -> reg
+                // login e swagger liberados
                 .requestMatchers("/auth/login").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .requestMatchers(HttpMethod.GET, "/incidents/**", "/stats/**", "/**/comments/**").authenticated()
+
+                // leitura autenticada
+                .requestMatchers(HttpMethod.GET, "/incidents/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/stats/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/**/comments/**").authenticated()
+
+                // escrita só ADMIN
                 .requestMatchers(HttpMethod.POST, "/incidents/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/incidents/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/incidents/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/incidents/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/incidents/*/comments").hasRole("ADMIN")
+
+                // fallback
                 .anyRequest().authenticated()
         );
 
-        http.authenticationProvider(authenticationProvider(userDetailsService(repo)));
+        // retorno 401 claro para requests sem credencial
+        http.exceptionHandling(ex -> ex.authenticationEntryPoint(
+                (req, res, e) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
+        ));
+
+        http.authenticationProvider(authenticationProvider);
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

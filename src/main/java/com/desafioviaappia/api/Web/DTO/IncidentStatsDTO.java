@@ -14,7 +14,4 @@ public class IncidentStatsDTO {
         this.name = name;
         this.count = (long) count;
     }
-
-    public String getName() { return name; }
-    public Long getCount() { return count; }
 }
