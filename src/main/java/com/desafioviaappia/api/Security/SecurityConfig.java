@@ -46,38 +46,24 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, UserRepository repo) throws Exception {
         http.csrf(csrf -> csrf.disable());
 
         http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(reg -> reg
-                // Auth & Swagger liberados
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers(
-                        "/v3/api-docs/**",
-                        "/swagger-ui/**",
-                        "/swagger-ui.html"
-                ).permitAll()
-
-                // Regras de autorização:
-                // GET liberado para QUALQUER autenticado
-                .requestMatchers(HttpMethod.GET, "/incidents/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/stats/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/**/comments/**").authenticated()
-
-                // Escrita só ADMIN
+                .requestMatchers("/auth/login").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                .requestMatchers(HttpMethod.GET, "/incidents/**", "/stats/**", "/**/comments/**").authenticated()
                 .requestMatchers(HttpMethod.POST, "/incidents/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/incidents/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/incidents/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/incidents/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/incidents/*/comments").hasRole("ADMIN")
-
-                // fallback
                 .anyRequest().authenticated()
         );
 
-        http.authenticationProvider(authenticationProvider(userDetailsService(null)));
+        http.authenticationProvider(authenticationProvider(userDetailsService(repo)));
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

@@ -24,12 +24,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
     }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain)
             throws ServletException, IOException {
+
+        String path = request.getServletPath();
+
+        // Ignorar login e docs
+        if (path.equals("/auth/login") || path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui")) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (!StringUtils.hasText(header) || !header.startsWith("Bearer ")) {
@@ -56,6 +63,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
             });
         }
+
         chain.doFilter(request, response);
     }
+
 }

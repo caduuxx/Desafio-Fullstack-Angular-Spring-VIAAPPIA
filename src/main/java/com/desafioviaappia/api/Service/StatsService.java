@@ -16,11 +16,14 @@ public class StatsService {
     }
 
     public List<IncidentStatsDTO> getIncidentsByPriority() {
-        return incidentRepository.countByPriority();
+        return incidentRepository.countIncidentsByPriority().stream()
+                .map(obj -> new IncidentStatsDTO(obj[0].toString(), ((Long) obj[1]).intValue()))
+                .toList();
     }
 
     public List<IncidentStatsDTO> getIncidentsByStatus() {
-        return incidentRepository.countByStatus();
+        return incidentRepository.countIncidentsByStatus().stream()
+                .map(obj -> new IncidentStatsDTO(obj[0].toString(), ((Long) obj[1]).intValue()))
+                .toList();
     }
 }
-
